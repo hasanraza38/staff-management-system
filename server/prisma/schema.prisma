@@ -8,29 +8,30 @@ generator client {
 }
 
 model Candidate {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
   skills    String
   experience Int
-  assignments Assignment[]
+  jobs      JobCandidate[]
 }
 
 model Client {
-  id        Int      @id @default(autoincrement())
-  company   String
+  id        Int    @id @default(autoincrement())
+  name      String
   contact   String
   jobs      Job[]
 }
 
 model Job {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
+  isOpen    Boolean   @default(true)
   clientId  Int
-  client    Client   @relation(fields: [clientId], references: [id])
-  assignments Assignment[]
+  client    Client    @relation(fields: [clientId], references: [id])
+  candidates JobCandidate[]
 }
 
-model Assignment {
+model JobCandidate {
   id          Int       @id @default(autoincrement())
   candidateId Int
   jobId       Int

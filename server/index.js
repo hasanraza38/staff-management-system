@@ -1,19 +1,33 @@
-const express = require("express")
-const cors = require("cors")
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv"
+import candidateRoutes from './routes/candidate.routes.js';
+import clientRoutes from './routes/client.routes.js';
+import jobRoutes from './routes/jobs.routes.js';
+import reportRoutes from './routes/report.routes.js';
+import helmet from "helmet";
+import morgan from "morgan";
+
+dotenv.config()
 
 const app = express();
 const port = process.env.PORT || 4000
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true  
+}));
+app.use(helmet());
+app.use(morgan("dev"));
 app.use(express.json());
 
 
-app.get("/",(req,res)=>{
- res.send("app running")   
-})
+
+app.use('/api/v1/candidate', candidateRoutes);
+app.use("/api/v1/job", jobRoutes);
+app.use("/api/v1/client",  clientRoutes);
+app.use("/api/v1/report", reportRoutes);
 
 
 
-
-
-app.listen(port, () => console.log("Server running on http://localhost:4000"));
+app.listen(port, () => console.log("Server is running... "));
