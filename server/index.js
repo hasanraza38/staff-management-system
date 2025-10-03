@@ -7,7 +7,6 @@ import jobRoutes from './routes/jobs.routes.js';
 import reportRoutes from './routes/report.routes.js';
 import helmet from "helmet";
 import morgan from "morgan";
-
 dotenv.config()
 
 const app = express();

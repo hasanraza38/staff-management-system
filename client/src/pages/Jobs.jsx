@@ -27,7 +27,8 @@ const Jobs = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await api.get("/job");
+      const params = search ? { title: search } : {};
+      const res = await api.get("/job", { params });
       setJobs(res.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -53,10 +54,17 @@ const Jobs = () => {
   };
 
   useEffect(() => { 
-    fetchJobs(); 
+    const timer = setTimeout(() => {
+      fetchJobs(); 
+    }, 300); 
+    
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
     fetchClients();
     fetchCandidates();
-  }, [search]);
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -168,6 +176,10 @@ const Jobs = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <Sidebar activePage="jobs">
       <div className="p-6 space-y-6">
@@ -271,7 +283,7 @@ const Jobs = () => {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Search by job title..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={handleSearchChange}
                 />
               </div>
             </div>

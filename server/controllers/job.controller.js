@@ -27,7 +27,11 @@ const postJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
   try {
+    const { title } = req.query;
     const jobs = await prisma.job.findMany({
+      where: title
+        ? { title: { contains: title, mode: "insensitive" } }
+        : {},
       include: {
         client: true,
         candidates: { include: { candidate: true } },
@@ -40,6 +44,7 @@ const getJobs = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch jobs" });
   }
 };
+
 
 const updateJob = async (req, res) => {
   try {
