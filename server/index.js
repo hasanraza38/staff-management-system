@@ -13,13 +13,17 @@ const app = express();
 const port = process.env.PORT || 4000
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://staff-management-system-delta.vercel.app/",
   credentials: true  
 }));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
+
+app.get("/", (req, res) => {
+  res.send("API is running...")
+});
 
 
 app.use('/api/v1/candidate', candidateRoutes);
